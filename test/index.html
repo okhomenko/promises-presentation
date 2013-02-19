@@ -1,52 +1,78 @@
-<h1>Obama <span id='obama'>?</span>:<span id='romni'>?</span> Romni</h1>
+<head>
+<meta charset='utf-8'>
+<style>
+#yu { background-image: url('yu.jpg'); }
+#ya { background-image: url('ya.jpg'); }
 
-<div id='container'></div>
+.candidate {
+  width: 388px;
+  height: 256px;
 
-<div id='info'></div>
+  display: inline-block;
+  background-position: 0 50%;
+  background-size: 100% auto;
+}
+
+.candidate.small {
+  width: 196px;
+  height: 128px;
+}
+
+.winner, .looser {
+  -webkit-transition: all 0.3s ease-out;  /* Chrome 1-25, Safari 3.2+ */
+     -moz-transition: all 0.3s ease-out;  /* Firefox 4-15 */
+       -o-transition: all 0.3s ease-out;  /* Opera 10.50–12.00 */
+          transition: all 0.3s ease-out;  /* Chrome 26, Firefox 16+, IE 10+, Opera 12.50+ */
+}
+
+.hooligans {
+  width: 100%;
+  height: 350px;
+
+  display: none;
+  text-align: center;
+  font-size: 60px;
+
+  color: red;
+  background: url('yus.jpg') center center no-repeat;
+}
+
+.hooligans.winner {
+  display: block;
+}
+
+.looser {
+  background-position: 0 0;
+}
+
+.winner {
+  background-position: 0 -50%;
+}
+
+.results { 
+  font-size: 80px;
+  display: inline-block;
+}
+
+.red { color: red; }
+.blue { color: blue; }
+</style>
+</head>
+
+<div class='candidate' id='yu'></div>
+<div class='results'>
+    <span class='score yu'>0</span>:<span class='score ya'>0</span>
+</div>
+<div class='candidate' id='ya'></div>
+
+<div class='hooligans'>Та-дааам!</div>
+
+<div id='mentions'></div>
+
 
 <script src='jquery.js'></script>
-
-<style>
-  .red { color: red; }
-  .blue { color: blue; }
-</style>
 <script>
-
-$(function () {
-  'use strict';
-
-  function handleResponse (data, color) {
-    var content;
-
-    content = data.map(function(el) {
-      return $('<li>', {
-        text: el.tweet, 
-        'class': color
-      });
-    })
-    $('#container').append(content);
-  }
-
-  function handleResults (obama, romni) {
-    console.log(arguments);
-    $('#obama').text(obama);
-    $('#romni').text(romni);
-  }
-
-  var obama = $.getJSON('mocks/obama.json');
-
-  var romni = $.getJSON('mocks2/romni.json');
-
-  $.when(obama, romni)
-   .done(function (data1, data2) {
-     handleResponse(data1[0], 'blue');
-     handleResponse(data2[0], 'red');
-     handleResults(data1[0].length, data2[0].length)
-   })
-   .fail(function () {
-     $('#info').text('Unfortunately hooligans have stolen results. Bush is president.')
-   });
-
-});
-
+var statuses = ['loser', 'winner'];
+var colors = { 'yu': 'red', 'ya': 'blue' };
 </script>
+<script src='pidrahunok.js'></script>
