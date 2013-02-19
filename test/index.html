@@ -1,0 +1,52 @@
+<h1>Obama <span id='obama'>?</span>:<span id='romni'>?</span> Romni</h1>
+
+<div id='container'></div>
+
+<div id='info'></div>
+
+<script src='jquery.js'></script>
+
+<style>
+  .red { color: red; }
+  .blue { color: blue; }
+</style>
+<script>
+
+$(function () {
+  'use strict';
+
+  function handleResponse (data, color) {
+    var content;
+
+    content = data.map(function(el) {
+      return $('<li>', {
+        text: el.tweet, 
+        'class': color
+      });
+    })
+    $('#container').append(content);
+  }
+
+  function handleResults (obama, romni) {
+    console.log(arguments);
+    $('#obama').text(obama);
+    $('#romni').text(romni);
+  }
+
+  var obama = $.getJSON('mocks/obama.json');
+
+  var romni = $.getJSON('mocks2/romni.json');
+
+  $.when(obama, romni)
+   .done(function (data1, data2) {
+     handleResponse(data1[0], 'blue');
+     handleResponse(data2[0], 'red');
+     handleResults(data1[0].length, data2[0].length)
+   })
+   .fail(function () {
+     $('#info').text('Unfortunately hooligans have stolen results. Bush is president.')
+   });
+
+});
+
+</script>
