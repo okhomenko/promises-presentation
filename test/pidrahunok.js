@@ -9,17 +9,16 @@ function renderMentions (mentions, candidate) {
   $('#mentions').append(content);
 }
 
-function renderResults (yu, ya) {
-  $('.score.yu').text(yu);
-  $('.score.ya').text(ya);
-}
+$.when(getMentions ('yu'), getMentions ('ya'))
+ .done(function (data1, data2) {
+   var c1 = data1[0], c2 = data2[0];
+   if (c1.length > c2.length) {
+     c1.length = c2.length - 1;
+   }
 
-$.when(getMentions ('yu'), getMentions('ya'))
-  .done(function (data1, data2) {
-    var yu = data1[0], ya = data2[0];
-
-    renderMentions(ya, 'ya');
-    renderMentions(yu, 'yu');
-
-    renderResults(yu, ya);
-  })
+   renderMentions(c1, 'yu');
+   renderMentions(c2, 'ya');
+ })
+ .fail(function () {
+   console.log('Та-дааам! Хулиганы захватили урны и власть!')
+ })
